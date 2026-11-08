@@ -33,5 +33,5 @@ Anything unclear or incompatible with a free public app + public repo is not use
 | Component | License | Notes |
 |---|---|---|
 | Meta XR Simulator (standalone) | Meta SDK license — *to confirm* | Installed separately by the developer |
-| MediaPipe Unity Plugin (homuler) | MIT — *to confirm at M3* | Editor/Standalone only via asmdef constraints |
-| MediaPipe HandLandmarker model | Apache 2.0 — *to confirm at M3* | Editor/Standalone only |
+| MediaPipe Unity Plugin v0.16.3 (homuler, <https://github.com/homuler/MediaPipeUnityPlugin>) | **MIT** (package `LICENSE.md`); bundles MediaPipe (Apache 2.0) and dependencies under Apache 2.0 / MIT / BSD-3 / OFL / permissive custom notices (package `Third Party Notices.md`) | Fetched by `tools/webcam/fetch_mediapipe.py` (SHA-256 verified) into a gitignored embedded package. Android/iOS binaries stripped; assemblies and DLLs limited to Editor/desktop; `check_apk.py` fails if any of it appears in an APK. Not redistributed |
+| MediaPipe HandLandmarker model `hand_landmarker.task` (float16) | **Apache 2.0** (Google MediaPipe models) | Fetched to gitignored `TabletopTempo/WebcamModels/` (outside Assets, never built into a player). SHA-256 pinned in the fetch script |

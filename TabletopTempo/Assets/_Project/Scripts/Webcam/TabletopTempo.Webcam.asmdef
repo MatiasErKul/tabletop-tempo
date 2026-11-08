@@ -1,0 +1,30 @@
+{
+    "name": "TabletopTempo.Webcam",
+    "rootNamespace": "TabletopTempo.Webcam",
+    "references": [
+        "TabletopTempo.Core",
+        "TabletopTempo.Runtime",
+        "Mediapipe.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "WindowsStandalone64",
+        "macOSStandalone"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "TT_MEDIAPIPE"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.github.homuler.mediapipe",
+            "expression": "0.16.0",
+            "define": "TT_MEDIAPIPE"
+        }
+    ],
+    "noEngineReferences": false
+}

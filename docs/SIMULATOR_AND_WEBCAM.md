@@ -42,10 +42,65 @@ Quest 2 passthrough is black-and-white. To preview it:
 
 Rule: every piece of UI must still read clearly in greyscale; colour is never the only cue.
 
-## 5. Webcam hands (milestone 3, coming)
+## 5. Webcam hands (your real hands drive the game)
 
-Setup for the external webcam, MediaPipe hand tracking, camera placement (overhead clamp about
-50 cm above the desk works best) and calibration will be added here in M3.
+The simulator's own hands have only 4 poses. With an external webcam, MediaPipe tracks your real
+hands (21 joints each) and they drive the gameplay; the XR Simulator still provides head pose,
+room and rendering. Developer tool only: none of this is in the Quest APK.
+
+### One-time setup
+
+```bash
+python tools/webcam/fetch_mediapipe.py
+```
+
+Downloads the MediaPipe Unity Plugin (MIT, 277 MB, SHA-256 checked) and the hand model
+(Apache 2.0, 8 MB) into gitignored folders, strips mobile binaries and limits it to Editor/desktop.
+Re-run any time; it is idempotent. (macOS: same command.)
+
+### Camera placement
+
+- **Overhead (recommended):** clamp the webcam about **50 cm above the desk**, looking straight
+  down at the area in front of you. Both hands and ~50 × 40 cm of desk in view.
+- **Front:** camera on the far side of the desk at hand height, facing you. Works, but height
+  is estimated less precisely than with overhead.
+- Normal indoor lighting, plain desk if possible, sleeves pulled back.
+
+### Use it
+
+1. Unity: **Tools → Tabletop Tempo → Webcam (MediaPipe)** opens the webcam window.
+2. Pick the **Camera**, tick **Use webcam on Play** (or press **F8** during Play to switch
+   between webcam hands and simulator hands), choose the **mount** and rough camera height.
+3. Press **Play** (XR Simulator active). The window shows the camera with the tracked skeleton.
+4. Click **Calibrate** and follow the four prompts; each captures by itself once you hold still:
+   1. hold up only your **left** hand (fixes MediaPipe's left/right labels),
+   2. touch the desk ~20 cm **left** of centre near your edge with your index fingertip,
+   3. ~20 cm **right** of centre near your edge,
+   4. straight ahead ~35 cm from your edge.
+5. Your hands now appear as joint spheres above the virtual table, and the debug overlay (F9)
+   shows them. Calibration is saved per machine (`TabletopTempo/UserSettings/TabletopTempoWebcam.json`).
+   Recalibrate whenever the camera moves.
+
+### How it works (for tuning)
+
+Position on the desk comes from a 2D mapping (image → table) solved from the three touches; it
+also gives the camera's focal length. Each frame, the hand's distance from the camera is solved
+from MediaPipe's metric 3D landmarks and their 2D image positions (linear least squares over all
+21 joints, exact for a pinhole camera and independent of how the hand is tilted), then corrected by
+a hand-size factor learned during calibration. Hand shape uses the 3D landmarks rotated into table
+space. **Measure the camera height** and enter it: distances scale with it. Joints are One-Euro filtered. Frame times are the **capture**
+time, so tracker delay does not shift judging; remaining latency is covered by the latency
+calibration (webcam mode is stored separately from headset).
+
+### Webcam troubleshooting
+
+| Symptom | Fix |
+|---|---|
+| "model missing" in the window | Run `python tools/webcam/fetch_mediapipe.py` |
+| No camera / wrong camera | Pick it in the window *before* Play; close other apps using the camera |
+| Hands jump left/right | Redo calibration step 1 (left hand only) |
+| Height wrong (hands float or sink) | Set the camera height closer to reality, recalibrate |
+| Results/s below ~20 | Lower the camera resolution in the camera's own settings, close heavy apps |
 
 ## Troubleshooting
 

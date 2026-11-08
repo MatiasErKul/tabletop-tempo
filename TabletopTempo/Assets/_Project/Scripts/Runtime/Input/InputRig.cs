@@ -30,7 +30,31 @@ namespace TabletopTempo.Input
             _service.SetProvider(Choose(TabletopTempoSettings.Load()));
         }
 
+        private void Update()
+        {
+#if UNITY_EDITOR || UNITY_STANDALONE
+            if (Diagnostics.DevKeys.ToggleWebcamPressed()) ToggleWebcam();
+#endif
+        }
+
         private void LateUpdate() => SyncTable(force: false);
+
+        /// <summary>F8: switch between webcam hands and Meta / XR Simulator hands at runtime.</summary>
+        public void ToggleWebcam()
+        {
+            bool toWebcam = _service.ProviderName != "webcam-mediapipe";
+            if (_service.Provider is Behaviour old) old.enabled = false;
+            IHandFrameProvider next = toWebcam ? HandProviderRegistry.Create(HandProviderRegistry.Webcam, gameObject) : null;
+            if (toWebcam && next == null)
+                Debug.LogWarning("[TT] F8: webcam provider not available (run tools/webcam/fetch_mediapipe.py).");
+            if (next == null)
+            {
+                next = HandProviderRegistry.Create(HandProviderRegistry.Meta, gameObject);
+                if (next is Behaviour b) b.enabled = true;
+            }
+            _service.SetProvider(next);
+            Diagnostics.DevOverlay.Post("input: " + _service.ProviderName);
+        }
 
         private IHandFrameProvider Choose(TabletopTempoSettings s)
         {

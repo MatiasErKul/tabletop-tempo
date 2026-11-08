@@ -33,7 +33,7 @@ version that works here and record it in this table.
 
 - [x] **M1 Skeleton** — Unity project, packages, repo + LFS, Boot → Game scene, passthrough, capability service, release APK (59 MB, checks pass) · *open: XR Simulator run (needs install)*
 - [x] M2 Input abstraction
-- [ ] M3 Webcam mode
+- [x] M3 Webcam mode · *open: first real-webcam run by the developer*
 - [ ] M4 Rhythm core + Stage 1 (first demo-able slice)
 - [ ] M5 Table + Stages 2–4
 - [ ] M6 Cup + Stages 5–6
@@ -43,6 +43,25 @@ version that works here and record it in this table.
 - [ ] M10 Stretch (camera cup finder) — dropped unless ahead
 
 ## Log
+
+### 8 Nov 2026 — M3 webcam mode
+**Done**
+- `tools/webcam/fetch_mediapipe.py`: MediaPipe Unity Plugin 0.16.3 (MIT, SHA-256 verified) as a
+  gitignored embedded package + HandLandmarker model (Apache 2.0, hash pinned) outside Assets.
+  Strips Android/iOS binaries, removes the package's tests, limits its assemblies **and** its
+  "any platform" managed DLLs (Protobuf, Unsafe) to Editor/desktop. `check_apk.py` now also fails
+  if any MediaPipe/Protobuf/model/webcam file is in an APK.
+- `TabletopTempo.Webcam` assembly (Editor/desktop, compiles only when the package is present):
+  `WebcamMediaPipeProvider` (WebCamTexture → HandLandmarker LIVE_STREAM, CPU; capture-time
+  timestamps on the DSP clock; One-Euro filtered), `WebcamCalibrator` (4 guided steps, auto-capture
+  when still), `WebcamWindow` (Tools → Tabletop Tempo → Webcam: camera picker, live skeleton,
+  calibration). F8 switches webcam ↔ Meta/XR Simulator hands during Play.
+- Core maths (`WebcamCalibration`, `WebcamHandMapper`, `OneEuroFilter`), tested against a simulated
+  pinhole camera: affine from 3 touches, focal length, **per-frame depth by linear least squares**
+  over 21 joints (first tried apparent-size depth; it was 3.3 cm off for a tilted hand, so it was
+  replaced), learned hand-scale factor, palm normal/chirality preserved.
+
+**Needs you (can't be tested here)**: a real webcam run (camera placement, calibration, latency feel).
 
 ### 8 Nov 2026 — Android toolchain
 - Developer accepted the Android SDK license in chat. Installed a separate toolchain in

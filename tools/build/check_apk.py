@@ -87,6 +87,13 @@ def main():
     if meta.get("com.oculus.supportedDevices") != SUPPORTED_DEVICES:
         problems.append(f"supportedDevices is {meta.get('com.oculus.supportedDevices')!r}, want {SUPPORTED_DEVICES!r}")
 
+    # Developer-only webcam tracking (MediaPipe) must never be in a headset build.
+    import zipfile
+    for name in zipfile.ZipFile(apk).namelist():
+        low = name.lower()
+        if "mediapipe" in low or "google.protobuf" in low or "hand_landmarker" in low or "tabletoptempo.webcam" in low:
+            problems.append(f"developer-only webcam file in APK: {name}")
+
     print(f"APK: {apk} ({os.path.getsize(apk) / 1e6:.1f} MB)")
     print("permissions:")
     for p in perms:

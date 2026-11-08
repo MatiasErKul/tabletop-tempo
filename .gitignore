@@ -58,6 +58,11 @@ crashlytics-build.properties
 /Recordings/
 /tools/android-toolchain.local.txt
 
+# Developer-only webcam hand tracking (fetched by tools/webcam/fetch_mediapipe.py, never shipped)
+/TabletopTempo/Packages/com.github.homuler.mediapipe/
+/TabletopTempo/WebcamModels/
+/tools/webcam/_downloads/
+
 # Python tooling
 __pycache__/
 *.pyc
