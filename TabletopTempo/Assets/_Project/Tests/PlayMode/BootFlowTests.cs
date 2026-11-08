@@ -35,6 +35,12 @@ namespace TabletopTempo.Tests
             Assert.IsNotNull(Resources.Load("TMP Settings"), "TMP essentials must be imported (text renders nothing without them)");
             Assert.IsNotNull(GameObject.Find("StatusPanel"), "status card should exist");
             Assert.IsNotNull(GameObject.Find("TableAnchor"), "table anchor should exist");
+
+            // Input rig: service exists and picked the Meta provider (registered by the platform assembly).
+            yield return null;
+            var input = TabletopTempo.Input.HandInputService.Instance;
+            Assert.IsNotNull(input, "HandInputService should exist");
+            Assert.AreEqual("meta-hands", input.ProviderName, "editor without webcam mode → Meta / XR Simulator hands");
         }
     }
 }

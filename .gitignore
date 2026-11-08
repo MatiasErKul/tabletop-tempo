@@ -54,6 +54,7 @@ crashlytics-build.properties
 /Builds/
 /Logs/
 /TestResults/
+/Recordings/
 
 # Python tooling
 __pycache__/

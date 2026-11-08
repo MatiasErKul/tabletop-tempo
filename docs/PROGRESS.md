@@ -31,8 +31,8 @@ version that works here and record it in this table.
 
 ## Milestones
 
-- [ ] **M1 Skeleton** — Unity project, packages, repo + LFS, Boot → Game scene, passthrough, capability service, APK build, XR Simulator run
-- [ ] M2 Input abstraction
+- [x] **M1 Skeleton** — Unity project, packages, repo + LFS, Boot → Game scene, passthrough, capability service · *open: APK build (Android toolchain), XR Simulator run (needs install)*
+- [x] M2 Input abstraction
 - [ ] M3 Webcam mode
 - [ ] M4 Rhythm core + Stage 1 (first demo-able slice)
 - [ ] M5 Table + Stages 2–4
@@ -44,7 +44,23 @@ version that works here and record it in this table.
 
 ## Log
 
-### 8 Nov 2026
+### 8 Nov 2026 — M2 input abstraction
+**Done**
+- Public repo created: <https://github.com/MatiasErKul/tabletop-tempo> (main + m1-skeleton pushed, LFS OK).
+- Core: `HandFrame`/`HandData` (21 joints, table space, derived palm frame + fist/flat/pinch scores),
+  `HandShape`, `HandFrameHistory` (ring buffer + velocity), `TableSpace`, `IHandFrameProvider`,
+  `HandProviderRegistry`, `ReplaySession` (.ttrec text format) + `ReplayHandProvider`,
+  `SyntheticHand` (scripted hands for tests and ghost demos).
+- Meta: `MetaHandProvider` (OpenXR 26 → 21 joints, also drives XR Simulator hands), registered via
+  `MetaRegistration`. Rig switched to OpenXR hand skeleton types.
+- Runtime: `HandInputService`, `InputRig` (provider choice), `HandJointVisualizer`, `SessionRecorder`
+  (F10), `DevOverlay` (F9; not `DebugOverlay`, which clashes with URP's class). Generated into
+  Game.unity by `SceneBuilder`.
+- EditMode tests for palm-normal convention, shape scores, history, table space, replay round trip.
+
+**Not verifiable without hands yet**: real Meta hand data (XR Simulator only has 4 poses; webcam is M3).
+
+### 8 Nov 2026 — M1 skeleton
 **Done**
 - Repo scaffold: `.gitignore`, `.gitattributes` (LFS for binaries), MIT `LICENSE`, `THIRD_PARTY_NOTICES.md`, docs.
 - `tools/unity.ps1` batch wrapper (compile / test / build / method) + `tools/unity-path.txt`.

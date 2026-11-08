@@ -3,7 +3,8 @@
     "rootNamespace": "TabletopTempo",
     "references": [
         "TabletopTempo.Core",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

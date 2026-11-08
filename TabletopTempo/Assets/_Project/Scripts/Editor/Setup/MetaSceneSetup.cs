@@ -47,8 +47,10 @@ namespace TabletopTempo.EditorTools.Setup
                 cam.farClipPlane = 50f;
             }
 
-            AddHand(rig, "LeftHandAnchor", OVRHand.Hand.HandLeft, OVRSkeleton.SkeletonType.HandLeft, OVRMesh.MeshType.HandLeft);
-            AddHand(rig, "RightHandAnchor", OVRHand.Hand.HandRight, OVRSkeleton.SkeletonType.HandRight, OVRMesh.MeshType.HandRight);
+            // OpenXR 26-joint skeleton (XRHand_* bones), which MetaHandProvider maps to our 21 joints.
+            // The prefab defaults to the legacy OVR skeleton, so set the types explicitly.
+            AddHand(rig, "LeftHandAnchor", OVRHand.Hand.HandLeft, OVRSkeleton.SkeletonType.XRHandLeft, OVRMesh.MeshType.XRHandLeft);
+            AddHand(rig, "RightHandAnchor", OVRHand.Hand.HandRight, OVRSkeleton.SkeletonType.XRHandRight, OVRMesh.MeshType.XRHandRight);
 
             return rig;
         }

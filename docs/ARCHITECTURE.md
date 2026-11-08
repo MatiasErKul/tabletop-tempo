@@ -48,6 +48,34 @@ change the builder and run **Tools → Tabletop Tempo → Rebuild Scenes** or `.
 Boot: `AppBootstrap` → resolve capabilities → apply quality tier → load Game.
 Game: `OVRCameraRig` (passthrough underlay, floor-level origin, OVR hands) + `GameRoot/TableAnchor`.
 
+## Hand input (M2)
+
+```
+IHandFrameProvider.Write(frame, dspTime)      Meta (device + XR Simulator) · webcam (M3) · replay
+        │ world/tracking space (replays: already table space)
+HandInputService.Process
+        ├─ TableSpace.ToTableInPlace          table-local frame (from TableAnchor until calibration)
+        ├─ HandShape.Compute                  palm centre/normal/forward, finger curls, fist/flat/pinch
+        └─ HandFrameHistory.Push              ring buffer (120 frames), palm velocity
+        → FrameReady event                    recognizers (M4+), recorder, debug overlay
+```
+
+- **21 joints, MediaPipe order** (`HandJoint`). Meta's OpenXR 26-joint skeleton maps onto it in
+  `MetaHandProvider` (proximal = MCP knuckle, intermediate = PIP, distal = DIP). The rig uses the
+  OpenXR skeleton types (`XRHandLeft/Right`), not the legacy OVR 24-bone skeleton.
+- **Palm normal** always points out of the palm side (flat hand on the table → down). Unity is
+  left-handed, so the cross product is flipped for the right hand; unit tests pin this down.
+- **Times** are on the audio DSP clock (`AudioSettings.dspTime`), so the conductor can judge input directly.
+- **No allocation per frame**: frames and history slots are pre-allocated and copied in place.
+- `InputRig` picks the provider: replay asset → replay; editor + webcam mode → webcam (registered
+  by the webcam assembly, M3); otherwise Meta hands (which also covers the XR Simulator's hands).
+  Platform assemblies register factories in `HandProviderRegistry`.
+- `SyntheticHand` builds plausible hands from (palm centre, orientation, curl): the basis of all
+  recognizer tests and the ghost-hand demos.
+- **Recording**: F10 (or Tools → Tabletop Tempo → Record Session) writes `.ttrec` text files to
+  `Recordings/` (gitignored). Copy good ones into `Assets/_Project/Tests/Replays/` for tests.
+- **Debug overlay**: F9 — provider, per-hand confidence, fist/flat/pinch, palm height, events, fps.
+
 ## Coordinate frames
 
 All gameplay uses a **table-local frame**: origin = calibrated table point, +Y up, +Z away from

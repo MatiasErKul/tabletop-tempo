@@ -1,5 +1,6 @@
 using TabletopTempo.Boot;
 using TabletopTempo.Diagnostics;
+using TabletopTempo.Input;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -75,6 +76,8 @@ namespace TabletopTempo.EditorTools.Setup
             tableAnchor.transform.localPosition = DefaultTablePoint;
 
             BuildStatusPanel(tableAnchor.transform);
+            BuildInput(gameRoot.transform, tableAnchor.transform);
+            BuildDebugOverlay(tableAnchor.transform);
 
             // Allow running Game.unity directly in the editor (without Boot).
             new GameObject("CapabilityBootstrapFallback").AddComponent<CapabilityBootstrapFallback>();
@@ -130,6 +133,69 @@ namespace TabletopTempo.EditorTools.Setup
             tmp.text = "Tabletop Tempo";
 
             panel.AddComponent<CapabilityReadout>().Bind(tmp);
+        }
+
+        /// <summary>Hand input: service (provider → table space → history), provider picker, joint visuals, recorder.</summary>
+        private static void BuildInput(Transform gameRoot, Transform tableAnchor)
+        {
+            var go = new GameObject("Input");
+            go.transform.SetParent(gameRoot, false);
+            var service = go.AddComponent<HandInputService>();
+            var so = new SerializedObject(service);
+            so.FindProperty("tuning").objectReferenceValue = GetHandShapeTuningAsset();
+            so.ApplyModifiedPropertiesWithoutUndo();
+
+            go.AddComponent<InputRig>().Bind(tableAnchor);
+            go.AddComponent<SessionRecorder>();
+
+            var vis = go.AddComponent<HandJointVisualizer>();
+            var vso = new SerializedObject(vis);
+            vso.FindProperty("jointMaterial").objectReferenceValue = UnlitMaterial("TT_HandJoint", new Color(0.95f, 0.85f, 0.55f, 1f));
+            vso.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void BuildDebugOverlay(Transform tableAnchor)
+        {
+            var go = new GameObject("DevOverlay");
+            go.transform.SetParent(tableAnchor, false);
+            // To the right of the status card, angled toward the player.
+            go.transform.localPosition = new Vector3(0.36f, 0.30f, 0.26f);
+            go.transform.localRotation = Quaternion.Euler(15f, 30f, 0f);
+
+            var textGo = new GameObject("Text");
+            textGo.transform.SetParent(go.transform, false);
+            var tmp = textGo.AddComponent<TextMeshPro>();
+            tmp.rectTransform.sizeDelta = new Vector2(0.34f, 0.22f);
+            tmp.fontSize = 0.12f;
+            tmp.alignment = TextAlignmentOptions.TopLeft;
+            tmp.color = new Color(0.75f, 1f, 0.75f);
+            tmp.text = "DEBUG";
+            go.AddComponent<DevOverlay>().Bind(tmp);
+        }
+
+        private static HandShapeTuningAsset GetHandShapeTuningAsset()
+        {
+            const string path = "Assets/_Project/Settings/HandShapeTuning.asset";
+            var a = AssetDatabase.LoadAssetAtPath<HandShapeTuningAsset>(path);
+            if (a != null) return a;
+            AssetFolders.Ensure("Assets/_Project/Settings");
+            a = ScriptableObject.CreateInstance<HandShapeTuningAsset>();
+            a.tuning = Core.Input.HandShapeTuning.Default;
+            AssetDatabase.CreateAsset(a, path);
+            return a;
+        }
+
+        private static Material UnlitMaterial(string name, Color color)
+        {
+            string path = $"Assets/_Project/Art/Materials/{name}.mat";
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (mat != null) return mat;
+            AssetFolders.Ensure("Assets/_Project/Art/Materials");
+            mat = new Material(Shader.Find("Universal Render Pipeline/Unlit")) { name = name };
+            mat.SetColor("_BaseColor", color);
+            mat.enableInstancing = true;
+            AssetDatabase.CreateAsset(mat, path);
+            return mat;
         }
 
         private static Material PanelMaterial()
