@@ -1,0 +1,63 @@
+# ---- Unity project (lives in /TabletopTempo) ----
+/TabletopTempo/[Ll]ibrary/
+/TabletopTempo/[Tt]emp/
+/TabletopTempo/[Oo]bj/
+/TabletopTempo/[Bb]uild/
+/TabletopTempo/[Bb]uilds/
+/TabletopTempo/[Ll]ogs/
+/TabletopTempo/[Uu]ser[Ss]ettings/
+/TabletopTempo/[Mm]emoryCaptures/
+/TabletopTempo/[Rr]ecordings/
+/TabletopTempo/Assets/Plugins/Editor/JetBrains*
+/TabletopTempo/Assets/Oculus/VR/Editor/*.cache
+
+# IDE / generated project files
+.vs/
+.vscode/
+.idea/
+.gradle/
+ExportedObj/
+.consulo/
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Crash reports / builds
+sysinfo.txt
+crashlytics-build.properties
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# ---- Repo-level outputs ----
+/Builds/
+/Logs/
+/TestResults/
+
+# Python tooling
+__pycache__/
+*.pyc
+.venv/
+venv/
+/tools/music/out/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
