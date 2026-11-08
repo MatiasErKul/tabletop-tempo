@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Lane frame CENTRE (both hands / cup): rounded square. -->
+  <rect x="7" y="7" width="86" height="86" rx="18" fill="#1e1e1e" opacity="0.88" stroke-width="0"/>
+  <rect x="7" y="7" width="86" height="86" rx="18" fill="none" stroke="white" stroke-width="7"/>
+</svg>

@@ -23,7 +23,7 @@ python tools/music/ttmusic.py all
 | Output | Path |
 |---|---|
 | Backing track (44.1 kHz, 16-bit stereo WAV, Git LFS) | `TabletopTempo/Assets/_Project/Audio/Music/<id>.wav` |
-| Starter chart (JSON) | `TabletopTempo/Assets/StreamingAssets/Charts/<id>.json` |
+| Starter chart (JSON) | `TabletopTempo/Assets/_Project/Charts/<id>.ttchart` (JSON, imported as a `ChartAsset` by a ScriptedImporter) |
 
 Chart format (read by the game's chart loader):
 
@@ -44,7 +44,7 @@ Chart format (read by the game's chart loader):
 
 1. Check the license. Only your own work, CC0 or public domain. Record it in `THIRD_PARTY_NOTICES.md`.
 2. Export a WAV and put it at `TabletopTempo/Assets/_Project/Audio/Music/<id>.wav` (same name).
-3. Edit `TabletopTempo/Assets/StreamingAssets/Charts/<id>.json`:
+3. Edit `TabletopTempo/Assets/_Project/Charts/<id>.ttchart` (JSON, imported as a `ChartAsset` by a ScriptedImporter):
    - `offsetSeconds` = time (s) of the first downbeat in your file,
    - `tempo` = your track's tempo (one entry if it never changes),
    - move `notes` so they sit on your track's beats.

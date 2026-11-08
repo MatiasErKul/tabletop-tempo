@@ -25,8 +25,9 @@ Anything unclear or incompatible with a free public app + public repo is not use
 | TextMesh Pro Essential Resources (TMP Settings, shaders, LiberationSans SDF) | Unity uGUI 2.0 package, imported by setup into `Assets/TextMesh Pro` | Unity Companion License; **LiberationSans font: SIL Open Font License 1.1** (`Assets/TextMesh Pro/Fonts/LiberationSans - OFL.txt`) | In APK. OFL allows embedding in apps |
 | ~~EmojiOne sample sprites~~ (bundled with TMP Essentials) | emojione.com | Not clearly stated in the bundle ("review their licensing terms") | **Removed** by setup, not used |
 | Music (all stages) | `tools/music/ttmusic.py` + `tools/music/patterns/`, this repo | MIT (original work) | Synthesised from scratch, no samples. Stage 1 done |
-| Sound effects | `tools/music/` synth, this repo | MIT (original work) | *Not generated yet* |
-| Pictograms | `TabletopTempo/Assets/_Project/Art/Pictograms/src`, this repo | MIT (original work) | *Not created yet* |
+| Sound effects (hits, miss, count-in, UI, stage clear) | `tools/music/ttmusic.py sfx`, this repo | MIT (original work) | Synthesised from scratch |
+| Pictograms + lane frames + star | SVG sources in `TabletopTempo/Assets/_Project/Art/Pictograms/src`, rasterised by `tools/art/pictograms.py` (own SDF rasteriser, stdlib only) | MIT (original work) | Clap done; other moves at M5/M6 |
+| Shaders `TabletopTempo/Card`, `TabletopTempo/UnlitColor` | this repo | MIT (original work) | |
 
 ## Developer-only tools (never in the APK)
 

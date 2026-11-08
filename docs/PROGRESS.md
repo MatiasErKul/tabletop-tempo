@@ -44,6 +44,36 @@ version that works here and record it in this table.
 
 ## Log
 
+### 8 Nov 2026 — M4 rhythm core (in progress) + Unity editor crash
+**Done and verified (EditMode 75/75 before the crash started)**
+- Core: `TempoMap`, `Chart` (+ validation), `MoveId`/`MoveEvent`, `Judge` (Perfect ±60 / Great ±110 /
+  Good ±170 ms, "Close!" for wrong move at the right time, latency subtraction), `Score` (combo,
+  accuracy, stars). `ClapRecognizer`: detects at 6 cm palm gap and extrapolates to the physical
+  touch (3 cm) so claps aren't judged early; predicts claps through the typical tracking dropout.
+- Assets by script: `tools/art/pictograms.py` (own SVG-subset SDF rasteriser, stdlib) → clap icon,
+  lane frames (circle / rounded square / diamond), star; `ttmusic.py sfx` → 10 feedback sounds.
+  Charts are now `Assets/_Project/Charts/<id>.ttchart` (ScriptedImporter → `ChartAsset`).
+
+**Written, NOT yet compiled** (Unity cannot start, see below): Conductor (DSP clock, PlayScheduled,
+smoothed visual time, pause/resume), `NoteHighway` + `Card`/`UnlitColor` shaders (stereo-instanced,
+noise dissolve), `StageHud`, `StageRunner` (Intro → Try 4 claps → count-in → Play → Results),
+`MoveEventHub`/`RecognizerHost`, keyboard stand-ins (Space = clap, A = autoplay), import rules,
+StageDefinition setup, scene wiring, PlayMode test that plays all of Stage 1 on autoplay.
+
+**Blocker: every Unity start crashes in Meta's OVRPlugin.dll (since ~14:20, 8 Nov)**
+- Symptom: Unity exits 0xC0000409, fast-fail code 7 (`abort()`), in a *worker thread* of
+  `com.meta.xr.sdk.core/Plugins/Win64OpenXR/OVRPlugin.dll` (offset 0x4a36f1, CRT area), right after
+  the log line `OVRTelemetry.cpp:57] Telemetry_Init: calling startSession`. Windows keeps dumps in
+  `%LOCALAPPDATA%\CrashDumps\Unity.exe.*.dmp`.
+- Reproduces with: our project, the exact M3 commit that built at 05:35, a brand-new project with
+  **only** Meta Core 207.0.1, and with Meta Core 205.0.0. Same in compile, setup and test modes.
+- Ruled out: our code and assets, MediaPipe, Meta remote-content cache, `Oculus\Unity\Unity.json`,
+  telemetry consent value, OpenXR runtimes/API layers (none installed), Meta Quest Link (not
+  installed), port clashes, proxy/DNS, disk space, Windows/VS updates (none around 14:20).
+- Most likely: a stuck system state or a server-side change on Meta's end that makes OVRPlugin's
+  telemetry worker abort. Next steps: restart the PC; if it persists, test one run offline
+  (Wi-Fi off) to confirm the network/telemetry theory; then report to Meta (developer forum).
+
 ### 8 Nov 2026 — M3 webcam mode
 **Done**
 - `tools/webcam/fetch_mediapipe.py`: MediaPipe Unity Plugin 0.16.3 (MIT, SHA-256 verified) as a

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Lane frame LEFT: circle. White ring is tinted with the lane colour in-game; dark fill keeps contrast over passthrough. -->
+  <circle cx="50" cy="50" r="44" fill="#1e1e1e" opacity="0.88" stroke-width="0"/>
+  <circle cx="50" cy="50" r="44" fill="none" stroke="white" stroke-width="7"/>
+</svg>

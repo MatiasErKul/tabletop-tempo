@@ -6,7 +6,7 @@ One pattern file (tools/music/patterns/*.json) describes a stage: tempo map, cho
 patterns, and the moves the player performs. This tool renders BOTH from it:
 
   * an original backing track  -> TabletopTempo/Assets/_Project/Audio/Music/<id>.wav (44.1 kHz, 16-bit stereo)
-  * the matching starter chart -> TabletopTempo/Assets/StreamingAssets/Charts/<id>.json
+  * the matching starter chart -> TabletopTempo/Assets/_Project/Charts/<id>.ttchart (JSON; imported as a ChartAsset)
 
 so music and chart can never drift apart. All output is original work (MIT, see THIRD_PARTY_NOTICES.md).
 
@@ -34,7 +34,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 PATTERNS = os.path.join(HERE, "patterns")
 OUT_AUDIO = os.path.join(REPO, "TabletopTempo", "Assets", "_Project", "Audio", "Music")
-OUT_CHARTS = os.path.join(REPO, "TabletopTempo", "Assets", "StreamingAssets", "Charts")
+OUT_CHARTS = os.path.join(REPO, "TabletopTempo", "Assets", "_Project", "Charts")
 
 LEAD_IN = 0.10  # seconds of silence before beat 0 (avoids a clipped first transient)
 
@@ -397,7 +397,7 @@ def build(pattern, chart_only=False):
         "generator": "tools/music/ttmusic.py (original work, MIT)",
     }
     os.makedirs(OUT_CHARTS, exist_ok=True)
-    with open(os.path.join(OUT_CHARTS, pid + ".json"), "w", encoding="utf-8", newline="\n") as f:
+    with open(os.path.join(OUT_CHARTS, pid + ".ttchart"), "w", encoding="utf-8", newline="\n") as f:
         json.dump(chart, f, indent=1)
         f.write("\n")
 
@@ -406,11 +406,78 @@ def build(pattern, chart_only=False):
     return chart, length_s
 
 
+OUT_SFX = os.path.join(REPO, "TabletopTempo", "Assets", "_Project", "Audio", "Sfx")
+
+
+def write_mono(path, buf, peak=0.8):
+    m = max(1e-9, max(abs(x) for x in buf))
+    fade = int(0.004 * SR)
+    frames = bytearray()
+    n = len(buf)
+    for i, x in enumerate(buf):
+        f = min(1.0, (n - i) / fade)
+        frames += struct.pack("<h", int(x / m * peak * f * 32767))
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with wave.open(path, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(SR)
+        w.writeframes(bytes(frames))
+
+
+def mix_into(dst, src, offset_s=0.0, gain=1.0):
+    o = int(offset_s * SR)
+    need = o + len(src)
+    if need > len(dst):
+        dst.extend([0.0] * (need - len(dst)))
+    for i, v in enumerate(src):
+        dst[o + i] += v * gain
+
+
+def build_sfx():
+    """Short original UI / feedback sounds (all synthesised here)."""
+    rng = Rng(77)
+    out = {}
+    # Hit feedback: bright two-note pluck, higher and with a sparkle for Perfect.
+    perfect = []
+    mix_into(perfect, pluck(84, 0.35), 0.0, 0.8)
+    mix_into(perfect, pluck(91, 0.30), 0.03, 0.6)
+    mix_into(perfect, [x * 0.25 for x in hat(rng)], 0.0)
+    out["hit_perfect"] = perfect
+    great = []
+    mix_into(great, pluck(79, 0.30), 0.0, 0.8)
+    mix_into(great, pluck(86, 0.25), 0.02, 0.4)
+    out["hit_great"] = great
+    out["hit_good"] = pluck(74, 0.25)
+    # Close / miss: soft and short, never punishing.
+    out["hit_close"] = [x * 0.6 for x in pluck(67, 0.2)]
+    out["miss"] = [x * env_exp(i, 0.06) for i, x in enumerate(one_pole_lp([rng.noise() for _ in range(int(0.15 * SR))], 500.0))]
+    # Count-in and UI ticks.
+    out["count_hi"] = tick(rng, 2600.0, 0.03)
+    out["count_lo"] = tick(rng, 1800.0, 0.03)
+    out["ui_tick"] = tick(rng, 3200.0, 0.012)
+    out["ui_confirm"] = pluck(81, 0.18)
+    # Stage clear: rising major arpeggio.
+    clear = []
+    for k, m in enumerate((72, 76, 79, 84, 88)):
+        mix_into(clear, pluck(m, 0.6), k * 0.07, 0.7)
+    out["stage_clear"] = clear
+    for name, buf in out.items():
+        write_mono(os.path.join(OUT_SFX, name + ".wav"), buf)
+        print(f"sfx {name}: {len(buf) / SR:.2f}s")
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("targets", nargs="+", help="pattern ids, or 'all'")
+    ap.add_argument("targets", nargs="+", help="pattern ids, 'all', or 'sfx'")
     ap.add_argument("--chart-only", action="store_true", help="write charts, skip audio rendering")
     args = ap.parse_args(argv)
+
+    if "sfx" in args.targets:
+        build_sfx()
+        args.targets = [t for t in args.targets if t != "sfx"]
+        if not args.targets:
+            return 0
 
     files = sorted(f for f in os.listdir(PATTERNS) if f.endswith(".json"))
     ids = [f[:-5] for f in files] if "all" in args.targets else args.targets
