@@ -52,6 +52,15 @@ namespace TabletopTempo.EditorTools.Setup
                 so.ApplyModifiedPropertiesWithoutUndo();
             }
 
+            // Audio: "Best latency" DSP buffer (256) for tight rhythm timing.
+            var audioManager = AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/AudioManager.asset");
+            if (audioManager != null && audioManager.Length > 0)
+            {
+                var am = new SerializedObject(audioManager[0]);
+                SerializedSetter.Set(am, "m_DSPBufferSize", 256);
+                am.ApplyModifiedPropertiesWithoutUndo();
+            }
+
             // Desktop (XR Simulator / webcam dev mode)
             PlayerSettings.SetScriptingBackend(NamedBuildTarget.Standalone, ScriptingImplementation.Mono2x);
             PlayerSettings.runInBackground = true;

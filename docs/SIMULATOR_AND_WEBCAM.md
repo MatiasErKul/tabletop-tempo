@@ -26,12 +26,23 @@ and passthrough rendering. From milestone 3 your real hands come from an externa
 
 To go back to Link/Quest: **Window → Meta → Meta XR Simulator → Deactivate**.
 
-## 3. What you should see (M1)
+## 3. What you should see
 
 - Passthrough (the synthetic room) behind everything.
-- A small dark status card above the table area: `Tabletop Tempo · M1 skeleton`, the capability
-  source (`editor-simulated-quest2`), tier `Low`, and live fps.
-- Hands are the simulator's built-in hands (only 4 poses — fine for menus, not for gameplay).
+- **Stage 1 "First Claps"** starts by itself: title → "Try it: clap 4 times" → count-in →
+  move cards fall down the highway behind the table to the glowing hit line; clap when they touch
+  it. Results with stars at the end; clap twice to play again.
+- Small developer cards left (capabilities, fps) and right (F9 debug overlay) of the highway.
+
+Without real hands (simulator hands only have 4 poses), use the keyboard in Play mode:
+
+| Key | Does |
+|---|---|
+| **Space** | a clap, right now |
+| **A** | autoplay on/off (the game hits every note perfectly — for checking visuals and timing) |
+| **F8** | webcam hands ↔ simulator hands |
+| **F9** | debug overlay |
+| **F10** | record a hand session (`Recordings/`) |
 
 ## 4. Check the Quest 2 (greyscale) look
 

@@ -100,6 +100,7 @@ namespace TabletopTempo.Diagnostics
         public static bool ToggleOverlayPressed() => Pressed(UnityEngine.InputSystem.Key.F9);
         public static bool ToggleRecordingPressed() => Pressed(UnityEngine.InputSystem.Key.F10);
         public static bool ToggleWebcamPressed() => Pressed(UnityEngine.InputSystem.Key.F8);
+        public static bool AutoplayPressed() => Pressed(UnityEngine.InputSystem.Key.A);
 
         private static bool Pressed(UnityEngine.InputSystem.Key key)
         {

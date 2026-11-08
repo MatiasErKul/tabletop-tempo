@@ -81,7 +81,9 @@ namespace TabletopTempo.EditorTools
                 int code = 0;
                 try
                 {
-                    Debug.Log("[TT] Setup: step 3/3 – scenes");
+                    Debug.Log("[TT] Setup: step 3/3 – generated assets + scenes");
+                    Importers.AssetImportRules.ReimportGenerated();
+                    StageSetup.Stage1();
                     SceneBuilder.Rebuild();
                     AssetDatabase.SaveAssets();
                     if (!TmpResources.Present) code = 1;

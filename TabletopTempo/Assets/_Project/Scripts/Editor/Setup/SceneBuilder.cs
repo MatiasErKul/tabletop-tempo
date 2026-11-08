@@ -1,6 +1,8 @@
 using TabletopTempo.Boot;
 using TabletopTempo.Diagnostics;
 using TabletopTempo.Input;
+using TabletopTempo.Rhythm;
+using TabletopTempo.Core.Rhythm;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -78,6 +80,7 @@ namespace TabletopTempo.EditorTools.Setup
             BuildStatusPanel(tableAnchor.transform);
             BuildInput(gameRoot.transform, tableAnchor.transform);
             BuildDebugOverlay(tableAnchor.transform);
+            SceneBuilderStage.Build(gameRoot.transform, tableAnchor.transform);
 
             // Allow running Game.unity directly in the editor (without Boot).
             new GameObject("CapabilityBootstrapFallback").AddComponent<CapabilityBootstrapFallback>();
@@ -106,14 +109,14 @@ namespace TabletopTempo.EditorTools.Setup
             return ls;
         }
 
-        /// <summary>Small world-space status card above the far table edge (M1 smoke test, replaced in M4).</summary>
+        /// <summary>Small capability/fps card, off to the left of the highway (developer info).</summary>
         private static void BuildStatusPanel(Transform tableAnchor)
         {
             var panel = new GameObject("StatusPanel");
             panel.transform.SetParent(tableAnchor, false);
-            // Behind the far table edge, slightly below eye level, tilted toward the player.
-            panel.transform.localPosition = new Vector3(0f, 0.30f, 0.30f);
-            panel.transform.localRotation = Quaternion.Euler(15f, 0f, 0f);
+            panel.transform.localPosition = new Vector3(-0.45f, 0.20f, 0.42f);
+            panel.transform.localRotation = Quaternion.Euler(15f, -30f, 0f);
+            panel.transform.localScale = Vector3.one * 0.6f;
 
             var bg = GameObject.CreatePrimitive(PrimitiveType.Quad);
             bg.name = "Background";
@@ -147,6 +150,8 @@ namespace TabletopTempo.EditorTools.Setup
 
             go.AddComponent<InputRig>().Bind(tableAnchor);
             go.AddComponent<SessionRecorder>();
+            go.AddComponent<RecognizerHost>();
+            go.AddComponent<DevMoveKeys>();
 
             var vis = go.AddComponent<HandJointVisualizer>();
             var vso = new SerializedObject(vis);
@@ -158,8 +163,8 @@ namespace TabletopTempo.EditorTools.Setup
         {
             var go = new GameObject("DevOverlay");
             go.transform.SetParent(tableAnchor, false);
-            // To the right of the status card, angled toward the player.
-            go.transform.localPosition = new Vector3(0.36f, 0.30f, 0.26f);
+            // Right of the highway, angled toward the player.
+            go.transform.localPosition = new Vector3(0.45f, 0.22f, 0.42f);
             go.transform.localRotation = Quaternion.Euler(15f, 30f, 0f);
 
             var textGo = new GameObject("Text");
