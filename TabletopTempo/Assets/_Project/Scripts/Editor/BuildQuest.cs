@@ -43,6 +43,7 @@ namespace TabletopTempo.EditorTools
             }
 
             Directory.CreateDirectory(Path.GetDirectoryName(OutputPath));
+            ScrubDevAgentSettings();
 
             var options = new BuildPlayerOptions
             {
@@ -71,6 +72,35 @@ namespace TabletopTempo.EditorTools
                     Debug.LogError($"[TT-ERROR]   {step.name}: {msg.content}");
             }
             return false;
+        }
+
+        /// <summary>
+        /// Meta's Dev Agent settings live in Resources (so they ship in the APK) and hold a local access
+        /// token plus the dev PC's LAN IP. Blank them and keep the agent disabled before every build.
+        /// </summary>
+        public static void ScrubDevAgentSettings()
+        {
+            const string path = "Assets/Resources/DevAgentSettings.asset";
+            var asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
+            if (asset == null) return;
+            var so = new SerializedObject(asset);
+            bool changed = false;
+            foreach (var name in new[] { "accessToken", "serverAddress", "witClientAccessToken" })
+            {
+                var p = so.FindProperty(name);
+                if (p != null && p.propertyType == SerializedPropertyType.String && !string.IsNullOrEmpty(p.stringValue))
+                {
+                    p.stringValue = "";
+                    changed = true;
+                }
+            }
+            var enabled = so.FindProperty("enabled");
+            if (enabled != null && enabled.boolValue) { enabled.boolValue = false; changed = true; }
+            if (!changed) return;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(asset);
+            AssetDatabase.SaveAssets();
+            Debug.Log("[TT] Scrubbed DevAgentSettings (token / LAN IP) before build.");
         }
 
         private static void ExitWith(bool ok)

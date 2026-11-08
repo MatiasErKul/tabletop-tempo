@@ -1,0 +1,303 @@
+{
+ "id": "stage1_first_claps",
+ "title": "First Claps",
+ "audio": "Music/stage1_first_claps",
+ "offsetSeconds": 0.1,
+ "beatsPerBar": 4,
+ "tempo": [
+  {
+   "beat": 0,
+   "bpm": 72
+  },
+  {
+   "beat": 20,
+   "bpm": 80
+  }
+ ],
+ "lengthBeats": 60,
+ "sections": [
+  {
+   "name": "countin",
+   "startBeat": 0,
+   "bars": 1,
+   "bpm": 72,
+   "phase": "countin",
+   "coach": "Get ready to clap!"
+  },
+  {
+   "name": "quarters_slow",
+   "startBeat": 4,
+   "bars": 4,
+   "bpm": 72,
+   "phase": "play",
+   "coach": "Clap on every beat"
+  },
+  {
+   "name": "quarters",
+   "startBeat": 20,
+   "bars": 4,
+   "bpm": 80,
+   "phase": "play",
+   "coach": "A little faster!"
+  },
+  {
+   "name": "offbeats",
+   "startBeat": 36,
+   "bars": 4,
+   "bpm": 80,
+   "phase": "play",
+   "coach": "Now clap between the beats"
+  },
+  {
+   "name": "outro",
+   "startBeat": 52,
+   "bars": 2,
+   "bpm": 80,
+   "phase": "outro",
+   "coach": "Nice clapping!"
+  }
+ ],
+ "notes": [
+  {
+   "beat": 4.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 5.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 6.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 7.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 8.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 9.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 10.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 11.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 12.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 13.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 14.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 15.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 16.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 17.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 18.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 19.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 20.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 21.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 22.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 23.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 24.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 25.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 26.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 27.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 28.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 29.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 30.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 31.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 32.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 33.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 34.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 35.0,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 36.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 37.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 38.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 39.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 40.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 41.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 42.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 43.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 44.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 45.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 46.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 47.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 48.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 49.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 50.5,
+   "move": "CLAP",
+   "hand": "both"
+  },
+  {
+   "beat": 51.5,
+   "move": "CLAP",
+   "hand": "both"
+  }
+ ],
+ "generator": "tools/music/ttmusic.py (original work, MIT)"
+}

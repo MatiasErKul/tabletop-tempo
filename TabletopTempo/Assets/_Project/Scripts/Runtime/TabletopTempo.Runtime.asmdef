@@ -2,7 +2,8 @@
     "name": "TabletopTempo.Runtime",
     "rootNamespace": "TabletopTempo",
     "references": [
-        "TabletopTempo.Core"
+        "TabletopTempo.Core",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

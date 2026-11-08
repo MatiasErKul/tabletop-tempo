@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ce12de2fcf3b594986d5746e9aab4b4, type: 3}
+  m_Name: TabletopTempoSettings
+  m_EditorClassIdentifier: TabletopTempo.Runtime::TabletopTempo.Settings.TabletopTempoSettings
+  inputMode: 0
+  webcamMode: 0
+  webcamDeviceName: 
+  webcamMount: 0
+  optionalFeatures:
+    CameraCupFinder: 0
+    DepthRaycast: 0
+  qualityOverride: 0
+  simulateGreyscalePassthrough: 0
+  simulateQuest2Capabilities: 1
+  gameSceneName: Game

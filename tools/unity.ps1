@@ -4,6 +4,7 @@
 
 .EXAMPLE
   ./tools/unity.ps1 compile            # open project headless, fail on compile errors
+  ./tools/unity.ps1 setup              # configure Quest/XR/URP settings + rebuild scenes
   ./tools/unity.ps1 test               # EditMode + PlayMode tests
   ./tools/unity.ps1 test-edit          # EditMode tests only
   ./tools/unity.ps1 method -Method TabletopTempo.EditorTools.BatchEntry.SetupProject
@@ -13,10 +14,11 @@
   The editor path is read from tools/unity-path.txt.
 #>
 param(
-    [ValidateSet('compile', 'test', 'test-edit', 'test-play', 'build', 'build-dev', 'method')]
+    [ValidateSet('compile', 'setup', 'test', 'test-edit', 'test-play', 'build', 'build-dev', 'method')]
     [string]$Mode = 'compile',
     [string]$Method = '',
-    [string]$TestFilter = ''
+    [string]$TestFilter = '',
+    [int]$TimeoutMinutes = 30
 )
 
 $ErrorActionPreference = 'Stop'
@@ -40,7 +42,17 @@ function Invoke-Unity {
     $argLine = ($all | ForEach-Object { Quote $_ }) -join ' '
     Write-Host ">> Unity $Name  (log: Logs/$Name.log)"
     $sw = [Diagnostics.Stopwatch]::StartNew()
-    $p = Start-Process -FilePath $unity -ArgumentList $argLine -Wait -PassThru -NoNewWindow
+    $p = Start-Process -FilePath $unity -ArgumentList $argLine -PassThru -NoNewWindow
+    # Touch the handle now: otherwise .ExitCode is $null after WaitForExit(timeout) and failures look like success.
+    $null = $p.Handle
+    # Hard timeout so an async batch method that never calls Exit cannot hang forever.
+    if (-not $p.WaitForExit($TimeoutMinutes * 60 * 1000)) {
+        Write-Host "   TIMEOUT after $TimeoutMinutes min, killing Unity"
+        try { $p.Kill() } catch {}
+        $p.WaitForExit()
+        $sw.Stop()
+        return 124
+    }
     $sw.Stop()
     $code = $p.ExitCode
     Write-Host ("   exit {0} after {1:n0}s" -f $code, $sw.Elapsed.TotalSeconds)
@@ -79,6 +91,8 @@ function Run-Tests([string]$platform) {
 
 switch ($Mode) {
     'compile'   { exit (Invoke-Unity -UnityArgs @() -Name 'compile') }
+    # Async: BatchEntry.SetupProject exits the editor itself, so no -quit.
+    'setup'     { exit (Invoke-Unity -UnityArgs @('-executeMethod', 'TabletopTempo.EditorTools.BatchEntry.SetupProject') -Name 'setup' -NoQuit) }
     'method'    {
         if (-not $Method) { throw 'Pass -Method Namespace.Class.Method' }
         exit (Invoke-Unity -UnityArgs @('-executeMethod', $Method) -Name ('method-' + ($Method -split '\.')[-1]))

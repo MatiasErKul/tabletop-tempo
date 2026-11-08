@@ -14,15 +14,17 @@ Anything unclear or incompatible with a free public app + public repo is not use
 |---|---|---|---|---|---|
 | Unity Editor / Engine | 6000.3.28f1 | Unity | Unity Terms of Service (Personal plan) | Runtime yes | Not redistributed in repo |
 | Unity packages (URP, OpenXR, XR Management, XR Hands, Input System, uGUI/TextMeshPro, Test Framework, AI Navigation, Newtonsoft Json) | per `Packages/packages-lock.json` | Unity registry | Unity Companion License (Newtonsoft: MIT) | Yes (runtime parts) | Fetched by UPM |
-| Meta XR Core SDK | 207.0.1 | npm.developer.oculus.com | Meta Platform Technologies SDK License Agreement — *to confirm from package LICENSE on first install* | Yes | Not redistributed in repo; permitted for apps built for Meta Quest |
-| Meta XR Interaction SDK (+ OVR integration) | 207.0.1 | npm.developer.oculus.com | as above — *to confirm* | Yes | |
-| Meta MR Utility Kit (MRUK) | 207.0.1 | npm.developer.oculus.com | as above — *to confirm* | Yes | |
+| Meta XR Core SDK | 207.0.1 | npm.developer.oculus.com | Oculus SDK License Agreement (<https://developers.meta.com/horizon/licenses/oculussdk/>), per the package's `LICENSE.md` | Yes | Not redistributed in repo; the license permits shipping apps built with it |
+| Meta XR Interaction SDK (+ OVR integration) | 207.0.1 | npm.developer.oculus.com | Oculus SDK License Agreement | Yes | |
+| Meta MR Utility Kit (MRUK) | 207.0.1 | npm.developer.oculus.com | Oculus SDK License Agreement | Yes | |
 
 ## Fonts, art, audio, models
 
 | Asset | Source | License | Notes |
 |---|---|---|---|
-| Music (all stages) | `tools/music/` generator, this repo | MIT (original work) | *Not generated yet* |
+| TextMesh Pro Essential Resources (TMP Settings, shaders, LiberationSans SDF) | Unity uGUI 2.0 package, imported by setup into `Assets/TextMesh Pro` | Unity Companion License; **LiberationSans font: SIL Open Font License 1.1** (`Assets/TextMesh Pro/Fonts/LiberationSans - OFL.txt`) | In APK. OFL allows embedding in apps |
+| ~~EmojiOne sample sprites~~ (bundled with TMP Essentials) | emojione.com | Not clearly stated in the bundle ("review their licensing terms") | **Removed** by setup, not used |
+| Music (all stages) | `tools/music/ttmusic.py` + `tools/music/patterns/`, this repo | MIT (original work) | Synthesised from scratch, no samples. Stage 1 done |
 | Sound effects | `tools/music/` synth, this repo | MIT (original work) | *Not generated yet* |
 | Pictograms | `TabletopTempo/Assets/_Project/Art/Pictograms/src`, this repo | MIT (original work) | *Not created yet* |
 

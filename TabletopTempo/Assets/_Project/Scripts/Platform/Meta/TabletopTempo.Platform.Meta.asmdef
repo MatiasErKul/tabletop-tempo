@@ -1,0 +1,23 @@
+{
+    "name": "TabletopTempo.Platform.Meta",
+    "rootNamespace": "TabletopTempo.Platform.Meta",
+    "references": [
+        "TabletopTempo.Core",
+        "TabletopTempo.Runtime",
+        "Oculus.VR",
+        "Meta.XR.EnvironmentDepth"
+    ],
+    "includePlatforms": [
+        "Android",
+        "Editor",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

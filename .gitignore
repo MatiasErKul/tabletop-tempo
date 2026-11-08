@@ -11,6 +11,11 @@
 /TabletopTempo/Assets/Plugins/Editor/JetBrains*
 /TabletopTempo/Assets/Oculus/VR/Editor/*.cache
 
+# Meta Dev Agent pairing settings: contain a local access token and the dev PC's LAN IP.
+# Never commit; BuildQuest also blanks them before every build.
+/TabletopTempo/Assets/Resources/DevAgentSettings.asset
+/TabletopTempo/Assets/Resources/DevAgentSettings.asset.meta
+
 # IDE / generated project files
 .vs/
 .vscode/

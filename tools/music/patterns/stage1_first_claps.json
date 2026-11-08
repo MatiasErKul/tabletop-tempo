@@ -1,0 +1,32 @@
+{
+  "id": "stage1_first_claps",
+  "title": "First Claps",
+  "bpm": 80,
+  "beatsPerBar": 4,
+  "octaveRoot": 48,
+  "seed": 101,
+  "chords": ["C", "Am7", "Fmaj7", "G"],
+  "drumPatterns": {
+    "light":  { "kick": "X.......X.......", "hat": "..x...x...x...x." },
+    "groove": { "kick": "X.......x.x.....", "snare": "....X.......X...", "hat": "x.x.x.x.x.x.x.x." },
+    "lift":   { "kick": "X...x...X...x...", "snare": "....X.......X...", "hat": "x.x.x.x.x.x.x.xX", "ohat": "..............x." }
+  },
+  "bassPatterns": {
+    "pulse": "x---....x---....",
+    "walk":  "x---..x-x---..x-"
+  },
+  "melodyPatterns": {
+    "hook": { "steps": "x.....x...x.x...", "degrees": [2, 1, 0, 1] }
+  },
+  "chartPatterns": {
+    "quarters": [ { "steps": "x...x...x...x...", "move": "CLAP", "hand": "both" } ],
+    "offbeats": [ { "steps": "..x...x...x...x.", "move": "CLAP", "hand": "both" } ]
+  },
+  "sections": [
+    { "name": "countin",       "bars": 1, "bpm": 72, "drums": "countin", "pad": false, "phase": "countin", "coach": "Get ready to clap!" },
+    { "name": "quarters_slow", "bars": 4, "bpm": 72, "drums": "light",  "bass": "pulse", "chart": "quarters", "phase": "play", "coach": "Clap on every beat" },
+    { "name": "quarters",      "bars": 4, "bpm": 80, "drums": "groove", "bass": "walk",  "chart": "quarters", "phase": "play", "coach": "A little faster!" },
+    { "name": "offbeats",      "bars": 4, "bpm": 80, "drums": "groove", "bass": "walk",  "chart": "offbeats", "phase": "play", "coach": "Now clap between the beats" },
+    { "name": "outro",         "bars": 2, "bpm": 80, "drums": "lift",   "bass": "walk",  "melody": "hook", "phase": "outro", "coach": "Nice clapping!" }
+  ]
+}
