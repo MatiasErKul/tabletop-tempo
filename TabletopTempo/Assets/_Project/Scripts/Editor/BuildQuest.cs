@@ -30,6 +30,8 @@ namespace TabletopTempo.EditorTools
 
         public static bool Build(bool development)
         {
+            if (!AndroidToolchain.Apply()) return false;
+
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android)
             {
                 EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
@@ -60,7 +62,9 @@ namespace TabletopTempo.EditorTools
 
             if (s.result == BuildResult.Succeeded)
             {
-                Debug.Log($"[TT] Build OK: {s.outputPath} ({s.totalSize / (1024f * 1024f):F1} MB) in {s.totalTime.TotalSeconds:F0}s");
+                // summary.totalSize counts symbols etc. outside the APK; report the real file size.
+                long apkBytes = File.Exists(OutputPath) ? new FileInfo(OutputPath).Length : 0;
+                Debug.Log($"[TT] Build OK: {s.outputPath} (APK {apkBytes / (1024f * 1024f):F1} MB) in {s.totalTime.TotalSeconds:F0}s");
                 return true;
             }
 

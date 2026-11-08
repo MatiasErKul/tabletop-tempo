@@ -31,7 +31,7 @@ version that works here and record it in this table.
 
 ## Milestones
 
-- [x] **M1 Skeleton** — Unity project, packages, repo + LFS, Boot → Game scene, passthrough, capability service · *open: APK build (Android toolchain), XR Simulator run (needs install)*
+- [x] **M1 Skeleton** — Unity project, packages, repo + LFS, Boot → Game scene, passthrough, capability service, release APK (59 MB, checks pass) · *open: XR Simulator run (needs install)*
 - [x] M2 Input abstraction
 - [ ] M3 Webcam mode
 - [ ] M4 Rhythm core + Stage 1 (first demo-able slice)
@@ -43,6 +43,22 @@ version that works here and record it in this table.
 - [ ] M10 Stretch (camera cup finder) — dropped unless ahead
 
 ## Log
+
+### 8 Nov 2026 — Android toolchain
+- Developer accepted the Android SDK license in chat. Installed a separate toolchain in
+  `C:\Users\matvi\AndroidDev` (OpenJDK 17.0.18, cmdline-tools 16, platform-tools 37.0.1,
+  build-tools 36, platforms 34 + 36, NDK r27c, CMake 3.22.1), hashes verified, and pointed Unity
+  at it via `tools/android-toolchain.local.txt` + `AndroidToolchain` (see docs/ANDROID_TOOLCHAIN.md).
+  The stale Hub-installed Android parts in the editor folder are unused.
+- **First APKs build.** Release `Builds/TabletopTempo.apk` = 59 MB (first IL2CPP dev build 11 min,
+  release 6 min). `tools/build/check_apk.py` passes on release: permissions are only INTERNET,
+  HAND_TRACKING, USE_ANCHOR_API, USE_SCENE (+ an Android-internal receiver permission); hand
+  tracking + passthrough required; `supportedDevices = quest2|quest3|quest3s`; hand tracking HIGH.
+- Found: Meta Core ships the **Meta XR Operator** AI-tooling layer (`XrApiLayer_METAX_operator`),
+  which adds `FOREGROUND_SERVICE_MEDIA_PROJECTION` (screen capture). Meta's build step includes it
+  only in **development** builds, never release; `check_apk.py` fails if it ever appears in a
+  release APK. Only ever upload release builds.
+- `INTERNET` stays (Unity/Meta platform). The app itself sends nothing anywhere.
 
 ### 8 Nov 2026 — M2 input abstraction
 **Done**
@@ -97,11 +113,8 @@ version that works here and record it in this table.
 - Tests: EditMode 12/12, PlayMode 1/1 (Boot → Game, Quest 2 profile, TMP present).
 
 **Known issues / blocked**
-- **APK build blocked:** the installed Unity Hub is 3.1.2 (2022) and its headless installer used a
-  stale module list: OpenJDK 8, NDK r21d, SDK tools 26, platforms 29/30. Unity 6000.3.28f1 needs
-  OpenJDK 17.0.18, NDK r27c, cmdline-tools 16, build-tools 36, platforms 34–37. Fix: update Unity
-  Hub and reinstall the Android modules (the SDK/NDK module requires accepting Google's Android SDK
-  license, which the developer must do).
+- ~~APK build blocked by Unity Hub 3.1.2's stale Android modules~~ → solved with a separate
+  toolchain (see "Android toolchain" above and docs/ANDROID_TOOLCHAIN.md).
 - The old Hub's licensing client also conflicts with Unity 6.3's: every batch run waits ~75 s for
   licensing before the editor launches its own. Updating Hub should fix this.
 - XR Simulator not installed yet (needs a download from Meta, see SIMULATOR_AND_WEBCAM.md).

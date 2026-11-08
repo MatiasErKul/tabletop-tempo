@@ -36,7 +36,10 @@ Requires Unity **6000.3.28f1** with Android Build Support. Close the Unity Edito
 ./tools/unity.ps1 compile     # compile check
 ./tools/unity.ps1 test        # EditMode + PlayMode tests
 ./tools/unity.ps1 build       # Builds/TabletopTempo.apk
+python tools/build/check_apk.py Builds/TabletopTempo.apk   # permissions / devices / features check
 ```
+
+Android toolchain notes (JDK 17, SDK, NDK r27c): [`docs/ANDROID_TOOLCHAIN.md`](docs/ANDROID_TOOLCHAIN.md).
 
 ## Licenses
 

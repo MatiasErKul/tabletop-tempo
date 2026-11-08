@@ -7,6 +7,7 @@
 /TabletopTempo/[Ll]ogs/
 /TabletopTempo/[Uu]ser[Ss]ettings/
 /TabletopTempo/[Mm]emoryCaptures/
+/TabletopTempo/.utmp/
 /TabletopTempo/[Rr]ecordings/
 /TabletopTempo/Assets/Plugins/Editor/JetBrains*
 /TabletopTempo/Assets/Oculus/VR/Editor/*.cache
@@ -55,6 +56,7 @@ crashlytics-build.properties
 /Logs/
 /TestResults/
 /Recordings/
+/tools/android-toolchain.local.txt
 
 # Python tooling
 __pycache__/

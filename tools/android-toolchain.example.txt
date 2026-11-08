@@ -1,0 +1,7 @@
+# Copy to tools/android-toolchain.local.txt (gitignored) to build with a custom Android toolchain
+# instead of the one Unity Hub installed. Needed when Hub installed outdated modules.
+# Required for Unity 6000.3: OpenJDK 17, Android SDK with platform-tools, build-tools 36,
+# platforms 34+ and NDK r27c (27.2.12479018). See docs/ANDROID_TOOLCHAIN.md.
+jdk=C:\Users\<you>\AndroidDev\OpenJDK
+sdk=C:\Users\<you>\AndroidDev\sdk
+ndk=C:\Users\<you>\AndroidDev\sdk\ndk\27.2.12479018

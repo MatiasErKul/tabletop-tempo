@@ -25,6 +25,9 @@ API, no headset camera access, weaker GPU (target **72 fps**).
 ./tools/unity.ps1 build-dev
 ```
 
+(`build-dev` adds the profiler connection and Meta's dev-only tooling layer; use `build` for
+anything you hand to testers or upload, and run `python tools/build/check_apk.py` on it.)
+
 Then either drag `Builds/TabletopTempo.apk` onto the device in MQDH, or:
 
 ```bash
